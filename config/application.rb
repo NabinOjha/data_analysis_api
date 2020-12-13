@@ -33,7 +33,7 @@ module DataAnalysisApi
     config.middleware.insert_before 0, Rack::Cors do
       allow do
          origins '*'
-         resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :patch, :options]
+         resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :patch, :options], :expose => ['access-token', 'expiry', 'token-type', 'uid', 'client']
        end
     end
 

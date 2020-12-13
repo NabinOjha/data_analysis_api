@@ -16,8 +16,6 @@ class IndustryController < ApplicationController
   
             def create_filter_query(filter_parameters)
               filter_query = ''
-              # puts filter_parameters
-  
   
               def equals_to_query(filter_query, key, value)
                 if(filter_query.empty?)
@@ -37,44 +35,21 @@ class IndustryController < ApplicationController
   
               filter_parameters.each do |key, value|
                 if key == "name"
-                  # if(filter_query.empty?)
-                  #   filter_query << "name = #{value}"
-                  # else
-                  #   filter_query << " AND name = #{value}"
                   filter_query = equals_to_query(filter_query, key, value)
                  
   
                 elsif key =="business_type"
-                  # if(filter_query.empty?)
-                  #   filter_query << "business_type = #{value}"
-                  #  else
-                  #   filter_query << " AND business_type = #{value}"
                   filter_query = equals_to_query(filter_query, key, value)
                   # end
   
                 elsif key == "address"
-                  # if(filter_query.empty?)
-                  #   filter_query << "address = #{value}"
-                  # else
-                  #   filter_query << " AND address = #{value}"
-                  # end
                   filter_query = equals_to_query(filter_query, key, value)
   
                 elsif key == "email"
-                  # if(filter_query.empty?)
-                  #   filter_query << "email = #{value}"
-                  # else
-                  #   filter_query << " AND email = #{value}"
-                  # end
                   filter_query = equals_to_query(filter_query, key, value)
   
   
                 elsif key == "num_employees"
-                  # if(filter_query.empty?)
-                  #    filter_query << "num_employees >= #{(convert_to_hash(filter_parameters[key])['gte']).to_i} AND num_employees <= #{(convert_to_hash(filter_parameters[key])['lte']).to_i}"
-                  # else
-                  #   filter_query << " AND num_employees >= #{(convert_to_hash(filter_parameters[key])['gte']).to_i} AND num_employees <= #{(convert_to_hash(filter_parameters[key])['lte']).to_i}"
-                  # end
                   filter_query = number_range_query(filter_query, key, filter_parameters)
   
                 elsif key == "established_date"
@@ -92,11 +67,6 @@ class IndustryController < ApplicationController
                   end
   
                 elsif key == "total_branches"
-                  # if(filter_query.empty?)
-                  #    filter_query << "total_branches >= #{(convert_to_hash(filter_parameters[key])['gte']).to_i} AND total_branches <= #{(convert_to_hash(filter_parameters[key])['lte']).to_i}"
-                  # else
-                  #   filter_query << " AND total_branches >= #{(convert_to_hash(filter_parameters[key])['gte']).to_i} AND total_branches <= #{(convert_to_hash(filter_parameters[key])['lte']).to_i}"
-                  # end
                   filter_query = number_range_query(filter_query, key, filter_parameters)
                 end
               end
@@ -112,10 +82,7 @@ class IndustryController < ApplicationController
             # pagination and sorting parameters
             sort_by = params[:sort]
             limit = params[:limit]
-            offset = params[:offset]
-  
-  
-            
+            offset = params[:offset]     
            
             # sorting and pagination
           if sort_by && !limit && !offset
@@ -127,22 +94,6 @@ class IndustryController < ApplicationController
            else
             @businesses = Business.where(create_filter_query(filter_parameters))
            end
-  
-           
-  
-            
-           
-                    
-            #filtering
-            # @businesses = @businesses.filter{|business| business.name == params[:name]} if params[:name].present?
-            # @businesses = @businesses.filter{|business| business.business_type== params[:business_type]} if params[:business_type].present?
-            # @businesses = @businesses.filter{|business| business.address== params[:address]} if params[:address].present?
-            # @businesses = @businesses.filter {|business| business.email == params[:email]} if params[:email].present?
-            # @businesses =  @businesses.filter{|business| business.num_employees >= (convert_to_hash(params[:num_employees])['gte']).to_i && business.num_employees <= (convert_to_hash(params[:num_employees])['lte']).to_i} if params[:num_employees].present?
-            # @businesses = @businesses.filter{|business|  business.established_date >=  Date.parse(convert_to_hash(params[:established_date])['gte']) && business.established_date <= Date.parse(convert_to_hash(params[:established_date])['lte'])} if params[:established_date].present?
-            # @businesses = @businesses.filter{|business| business.avg_salary >= convert_to_hash(params[:avg_salary])['gte'].to_f && business.avg_salary <= convert_to_hash(params[:avg_salary])['lte'].to_f} if params[:avg_salary].present?
-            # @businesses = @businesses.filter{|business|  business.total_branches >= convert_to_hash(params[:total_branches])['gte'].to_i && business.total_branches <= convert_to_hash(params[:total_branches])['lte'].to_i} if params[:total_branches].present?
-  
   
             render :json => @businesses
           end
