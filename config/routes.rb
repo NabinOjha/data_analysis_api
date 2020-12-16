@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
  get '/users', to: 'user#index'
 
+ get '/ranges', to: "industry#get_ranges"
+
  get "/businesses", to: 'industry#index'
  get "/businesses/search", to: 'industry#search'
  get "/businesses/get_highest", to: "industry#get_highest_value"

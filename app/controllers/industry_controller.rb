@@ -76,9 +76,6 @@ class IndustryController < ApplicationController
               # "name = 'Quatz' AND num_employees >=50 AND num_employees <=90"
              return  filter_query
             end
-  
-  
-            
             # pagination and sorting parameters
             sort_by = params[:sort]
             limit = params[:limit]
@@ -94,8 +91,10 @@ class IndustryController < ApplicationController
            else
             @businesses = Business.where(create_filter_query(filter_parameters))
            end
+
+         
   
-            render :json => @businesses
+            render :json =>{businesses:  @businesses, count: Business.count}
           end
   
           def search_matches(field_name, search_param)
@@ -109,9 +108,31 @@ class IndustryController < ApplicationController
             fields_to_search_for.each do |field_name|
               result_businesses = result_businesses + search_matches(field_name, params[:search])
             end 
-            puts result_businesses
+            # puts result_businesses
             render :json => result_businesses.uniq
           end
+
+          def get_ranges
+           
+            max_salary = Business.maximum(:avg_salary)
+            min_salary = Business.minimum(:avg_salary)
+ 
+            max_branches = Business.maximum(:total_branches)
+            min_branches = Business.minimum(:total_branches)
+
+            max_num_employees = Business.maximum(:num_employees)
+            min_num_employees = Business.minimum(:num_employees)
+ 
+            max_established_date = Business.maximum(:established_date)
+            min_established_date = Business.minimum(:established_date)
+            
+            render :json => { salary_range: {max_salary: max_salary,  min_salary: min_salary},
+                            branches_range: {max_branches: max_branches, min_branches: min_branches},
+                            num_employees_ranges: {max_num_employees: max_num_employees, min_num_employees:min_num_employees},
+                            established_date_range: {max_established_date: max_established_date, min_established_date: min_established_date}}
+          end
+
+          
   
           def get_highest_value
             @business = Business.order("#{params[:field]} DESC").first
